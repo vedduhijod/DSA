@@ -1,22 +1,22 @@
+import java.util.HashMap;
+
 class Solution {
     public int majorityElement(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
         int n = nums.length;
 
-        for (int j = 0; j < n; j++) {
-            int firstel = nums[j];
-            int cnt = 0;
+        // count frequency
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
 
-            for (int i = 0; i < n; i++) {
-                if (nums[i] == firstel) {
-                    cnt++;
-                }
-            }
-
-            if (cnt > n / 2) {
-                return firstel;
+        // find majority
+        for (int key : map.keySet()) {
+            if (map.get(key) > n / 2) {
+                return key;
             }
         }
 
-        return -1; // majority element always exists per problem statement
+        return -1;
     }
 }
