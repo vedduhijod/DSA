@@ -2,31 +2,32 @@ import java.util.*;
 
 class Solution {
     public int longestConsecutive(int[] nums) {
-        if (nums.length == 0) return 0;
+        HashSet<Integer> set = new HashSet<>();
 
-        Arrays.sort(nums);  // STEP 1: sort
-
-        int longest = 1;
-        int count = 1;
-
-        for (int i = 1; i < nums.length; i++) {
-
-            // skip duplicates
-            if (nums[i] == nums[i - 1]) {
-                continue;
-            }
-
-            // consecutive number
-            if (nums[i] == nums[i - 1] + 1) {
-                count++;
-            } 
-            // break in sequence
-            else {
-                longest = Math.max(longest, count);
-                count = 1;
-            }
+        // put all elements into set
+        for (int num : nums) {
+            set.add(num);
         }
 
-        return Math.max(longest, count);
+        int longest = 0;
+
+        for (int num : set) {
+
+            // start only if num is the beginning
+            if (!set.contains(num - 1)) {
+
+                int curr = num;
+                int count = 1;
+
+                // count consecutive numbers
+                while (set.contains(curr + 1)) {
+                    curr++;
+                    count++;
+                }
+
+                longest = Math.max(longest, count);
+            }
+        }
+        return longest;
     }
 }
