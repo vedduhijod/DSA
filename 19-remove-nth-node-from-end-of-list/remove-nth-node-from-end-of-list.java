@@ -4,31 +4,27 @@ class Solution {
         // Edge case: empty list
         if (head == null) return null;
 
-        // Step 1: Count total nodes
-        int cnt = 0;
-        ListNode temp = head;
+        ListNode fast = head;
+        ListNode slow = head;
 
-        while (temp != null) {
-            cnt++;
-            temp = temp.next;
+        // Move fast pointer n steps ahead
+        for (int i = 0; i < n; i++) {
+            fast = fast.next;
         }
 
-        // Step 2: If deleting head
-        if (cnt == n) {
+        // If fast becomes null, we need to delete the head
+        if (fast == null) {
             return head.next;
         }
 
-        // Step 3: Find node before target
-        int res = cnt - n;
-        temp = head;
-
-        while (res > 1) {
-            temp = temp.next;
-            res--;
+        // Move both pointers together
+        while (fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
         }
 
-        // Step 4: Delete node
-        temp.next = temp.next.next;
+        // Delete nth node from end
+        slow.next = slow.next.next;
 
         return head;
     }
