@@ -15,19 +15,17 @@ import java.util.Set;
 public class Solution {
     public ListNode detectCycle(ListNode head) {
 
-        if (head == null || head.next == null) return null;
-
-        Set<ListNode> log = new HashSet<>();
+        Set<ListNode> visited = new HashSet<>();
 
         ListNode current = head;
 
         while (current != null) {
 
-            if (log.contains(current)) {
-                return current;   // start of cycle
+            if (visited.contains(current)) {
+                return current;     // cycle start node
             }
 
-            log.add(current);
+            visited.add(current);
             current = current.next;
         }
 
