@@ -18,10 +18,10 @@ if(head == null || head.next == null)
         ListNode evenHead = head.next;
 
         while(even != null && even.next != null){
-                        odd.next = even.next;
-            odd = odd.next;
+            odd.next = odd.next.next;
+            even.next = even.next.next;
 
-            even.next = odd.next;
+            odd = odd.next;
             even = even.next;
         }
         odd.next = evenHead;
