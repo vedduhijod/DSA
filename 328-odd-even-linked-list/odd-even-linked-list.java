@@ -1,44 +1,30 @@
-import java.util.*;
-
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
 class Solution {
     public ListNode oddEvenList(ListNode head) {
+if(head == null || head.next == null)
+    return head;
 
-        if(head == null) return null;
+        ListNode odd = head;
+        ListNode even = head.next;
+        ListNode evenHead = head.next;
 
-        ArrayList<Integer> arr = new ArrayList<>();
+        while(even != null && even.next != null){
+                        odd.next = even.next;
+            odd = odd.next;
 
-        ListNode temp = head;
-
-        // Store odd index values
-        while(temp != null && temp.next != null){
-            arr.add(temp.val);
-            temp = temp.next.next;
+            even.next = odd.next;
+            even = even.next;
         }
-
-        if(temp != null)
-            arr.add(temp.val);
-
-        // Store even index values
-        temp = head.next;
-
-        while(temp != null && temp.next != null){
-            arr.add(temp.val);
-            temp = temp.next.next;
-        }
-
-        if(temp != null)
-            arr.add(temp.val);
-
-        // Rewrite values into linked list
-        int i = 0;
-        temp = head;
-
-        while(temp != null){
-            temp.val = arr.get(i);
-            i++;
-            temp = temp.next;
-        }
-
-        return head;
+        odd.next = evenHead;
+            return head;
     }
 }
