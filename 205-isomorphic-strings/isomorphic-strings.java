@@ -1,17 +1,20 @@
 class Solution {
-    public static boolean isIsomorphic(String s, String t) {
-    int[] mapS = new int[256];
-    int[] mapT = new int[256];
+   public static boolean isIsomorphic(String s, String t) {
+        int[] mapS = new int[256];
+        int[] mapT = new int[256];
 
-    for (int i = 0; i < s.length(); i++) {
-        if (mapS[s.charAt(i)] != mapT[t.charAt(i)]) {
-            return false;
+        for (int i = 0; i < s.length(); i++) {
+            char chS = s.charAt(i);
+            char chT = t.charAt(i);
+
+            if (mapS[chS] != mapT[chT]) {
+                return false;
+            }
+
+            mapS[chS] = i + 1;
+            mapT[chT] = i + 1;
         }
-        mapS[s.charAt(i)] = i + 1;
-        mapT[t.charAt(i)] = i + 1;
+
+        return true;
     }
-
-    return true;
 }
-}
-
