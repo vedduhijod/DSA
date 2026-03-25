@@ -8,26 +8,16 @@ class Solution {
             map.put(c, map.getOrDefault(c, 0) + 1);
         }
 
-        // Step 2: Bucket array (index = frequency)
-        List<Character>[] buckets = new List[s.length() + 1];
+        // Step 2: Sort characters by frequency (descending)
+        List<Character> list = new ArrayList<>(map.keySet());
+        Collections.sort(list, (a, b) -> map.get(b) - map.get(a));
 
-        for (char c : map.keySet()) {
-            int freq = map.get(c);
-            if (buckets[freq] == null) {
-                buckets[freq] = new ArrayList<>();
-            }
-            buckets[freq].add(c);
-        }
-
-        // Step 3: Build result from highest frequency
+        // Step 3: Build result
         StringBuilder result = new StringBuilder();
-        for (int i = buckets.length - 1; i >= 0; i--) {
-            if (buckets[i] != null) {
-                for (char c : buckets[i]) {
-                    for (int j = 0; j < i; j++) {
-                        result.append(c);
-                    }
-                }
+        for (char c : list) {
+            int freq = map.get(c);
+            for (int i = 0; i < freq; i++) {
+                result.append(c);
             }
         }
 
