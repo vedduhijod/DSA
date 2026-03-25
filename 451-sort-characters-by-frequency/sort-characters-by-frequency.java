@@ -1,36 +1,33 @@
-import java.util.*;
-
 class Solution {
     public String frequencySort(String s) {
-        // Step 1: Count frequency
-        Map<Character, Integer> freqMap = new HashMap<>();
+        int[] freq = new int[128];
+
         for (char c : s.toCharArray()) {
-            freqMap.put(c, freqMap.getOrDefault(c, 0) + 1);
+            freq[c]++;
         }
 
-        // Step 2: Create buckets (index = frequency)
-        List<Character>[] buckets = new List[s.length() + 1];
-        for (int i = 0; i <= s.length(); i++) {
-            buckets[i] = new ArrayList<>();
-        }
+        StringBuilder sb = new StringBuilder();
 
-        // Step 3: Fill buckets
-        for (char c : freqMap.keySet()) {
-            int freq = freqMap.get(c);
-            buckets[freq].add(c);
-        }
+        while (true) {
+            int max = 0;
+            char maxChar = 0;
 
-        // Step 4: Build result (high → low frequency)
-        StringBuilder result = new StringBuilder();
-
-        for (int i = buckets.length - 1; i > 0; i--) {
-            for (char c : buckets[i]) {
-                for (int j = 0; j < i; j++) {
-                    result.append(c);
+            for (int i = 0; i < 128; i++) {
+                if (freq[i] > max) {
+                    max = freq[i];
+                    maxChar = (char) i;
                 }
             }
+
+            if (max == 0) break;
+
+            for (int i = 0; i < max; i++) {
+                sb.append(maxChar);
+            }
+
+            freq[maxChar] = 0;
         }
 
-        return result.toString();
+        return sb.toString();
     }
 }
