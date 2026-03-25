@@ -1,35 +1,24 @@
-import java.util.*;
-
 class Solution {
     public String frequencySort(String s) {
-        // Step 1: Frequency map
-        Map<Character, Integer> freqMap = new HashMap<>();
+        Map<Character, Integer> freq = new HashMap<>();
+        
         for (char c : s.toCharArray()) {
-            freqMap.put(c, freqMap.getOrDefault(c, 0) + 1);
+            freq.put(c, freq.getOrDefault(c, 0) + 1);
         }
-
-        // Step 2: Bucket array
-        List<Character>[] buckets = new List[s.length() + 1];
-        for (char key : freqMap.keySet()) {
-            int freq = freqMap.get(key);
-            if (buckets[freq] == null) {
-                buckets[freq] = new ArrayList<>();
-            }
-            buckets[freq].add(key);
-        }
-
-        // Step 3: Build result
+        
+        PriorityQueue<Map.Entry<Character, Integer>> pq = new PriorityQueue<>(
+            (a, b) -> b.getValue() - a.getValue()
+        );
+        
+        pq.addAll(freq.entrySet());
+        
         StringBuilder result = new StringBuilder();
-        for (int i = buckets.length - 1; i >= 0; i--) {
-            if (buckets[i] != null) {
-                for (char c : buckets[i]) {
-                    for (int j = 0; j < i; j++) {
-                        result.append(c);
-                    }
-                }
-            }
+        while (!pq.isEmpty()) {
+            Map.Entry<Character, Integer> entry = pq.poll();
+            result.append(String.valueOf(entry.getKey()).repeat(entry.getValue()));
         }
-
+        
         return result.toString();
     }
 }
+
