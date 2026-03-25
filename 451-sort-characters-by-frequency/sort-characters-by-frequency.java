@@ -2,32 +2,37 @@ class Solution {
     public String frequencySort(String s) {
         int[] freq = new int[128];
 
+        // Step 1: Count frequency
         for (char c : s.toCharArray()) {
             freq[c]++;
         }
 
-        StringBuilder sb = new StringBuilder();
+        // Step 2: Buckets (index = frequency)
+        StringBuilder[] buckets = new StringBuilder[s.length() + 1];
 
-        while (true) {
-            int max = 0;
-            char maxChar = 0;
-
-            for (int i = 0; i < 128; i++) {
-                if (freq[i] > max) {
-                    max = freq[i];
-                    maxChar = (char) i;
+        for (int i = 0; i < 128; i++) {
+            int f = freq[i];
+            if (f > 0) {
+                if (buckets[f] == null) {
+                    buckets[f] = new StringBuilder();
                 }
+                buckets[f].append((char) i);
             }
-
-            if (max == 0) break;
-
-            for (int i = 0; i < max; i++) {
-                sb.append(maxChar);
-            }
-
-            freq[maxChar] = 0;
         }
 
-        return sb.toString();
+        // Step 3: Build result
+        StringBuilder result = new StringBuilder();
+
+        for (int i = buckets.length - 1; i > 0; i--) {
+            if (buckets[i] != null) {
+                for (char c : buckets[i].toString().toCharArray()) {
+                    for (int j = 0; j < i; j++) {
+                        result.append(c);
+                    }
+                }
+            }
+        }
+
+        return result.toString();
     }
 }
