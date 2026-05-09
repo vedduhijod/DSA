@@ -2,22 +2,15 @@ import java.util.Stack;
 
 class MinStack {
 
-    private Stack<Integer> stack;
-    private Stack<Integer> minStack;
-
-    // Constructor
-    public MinStack() {
-        stack = new Stack<>();
-        minStack = new Stack<>();
-    }
+    private Stack<Integer> stack = new Stack<>();
+    private Stack<Integer> minStack = new Stack<>();
 
     // Push element
     public void push(int val) {
 
         stack.push(val);
 
-        // Push into minStack if empty
-        // or current value is minimum
+        // Store minimum values
         if (minStack.isEmpty() || val <= minStack.peek()) {
             minStack.push(val);
         }
