@@ -1,45 +1,50 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
 class MyStack {
-    static class Node{
-        int data;
-        Node next;
-        Node(int data){
-            this.data = data;
-            this.next = null;
+
+    Queue<Integer> q = new LinkedList<>();
+
+    // Push element onto stack
+    public void push(int x) {
+
+        int size = q.size();
+
+        // Add new element
+        q.add(x);
+
+        // Rotate previous elements
+        for (int i = 0; i < size; i++) {
+            q.add(q.remove());
         }
     }
-    private Node top;
 
-    public MyStack() {
-        this.top = null;
-    }
-    
-    public void push(int x) {
-        Node newNode = new Node(x);
-        newNode.next = top;
-        top = newNode;
-    }
-    
+    // Removes top element
     public int pop() {
-        int popped = top.data;
-        top = top.next;
+        return q.remove();
+    }
 
-        return popped;
-    }
-    
+    // Returns top element
     public int top() {
-      return top.data;  
+        return q.peek();
     }
-    
+
+    // Check if empty
     public boolean empty() {
-        return top == null;
+        return q.isEmpty();
+    }
+
+    public static void main(String[] args) {
+
+        MyStack st = new MyStack();
+
+        st.push(1);
+        st.push(2);
+        st.push(3);
+
+        System.out.println(st.top()); // 3
+
+        System.out.println(st.pop()); // 3
+        System.out.println(st.pop()); // 2
     }
 }
-
-/**
- * Your MyStack object will be instantiated and called as such:
- * MyStack obj = new MyStack();
- * obj.push(x);
- * int param_2 = obj.pop();
- * int param_3 = obj.top();
- * boolean param_4 = obj.empty();
- */
