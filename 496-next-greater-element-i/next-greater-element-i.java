@@ -1,23 +1,30 @@
 import java.util.Stack;
 
 class Solution {
+
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
 
         int n = nums2.length;
-        int[] nextGreater = new int[n];
 
-        Stack<Integer> stack = new Stack<>();
+        // Store next greater for nums2
+        int[] nge = new int[n];
 
-        // Compute next greater for nums2
+        Stack<Integer> st = new Stack<>();
+
+        // Find NGE for nums2
         for (int i = n - 1; i >= 0; i--) {
 
-            while (!stack.isEmpty() && stack.peek() <= nums2[i]) {
-                stack.pop();
+            while (!st.isEmpty() && st.peek() <= nums2[i]) {
+                st.pop();
             }
 
-            nextGreater[i] = stack.isEmpty() ? -1 : stack.peek();
+            if (st.isEmpty()) {
+                nge[i] = -1;
+            } else {
+                nge[i] = st.peek();
+            }
 
-            stack.push(nums2[i]);
+            st.push(nums2[i]);
         }
 
         // Build answer for nums1
@@ -27,8 +34,8 @@ class Solution {
 
             for (int j = 0; j < n; j++) {
 
-                if (nums2[j] == nums1[i]) {
-                    ans[i] = nextGreater[j];
+                if (nums1[i] == nums2[j]) {
+                    ans[i] = nge[j];
                     break;
                 }
             }
