@@ -1,34 +1,39 @@
+import java.util.Stack;
+
 class Solution {
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
 
-        int[] result = new int[nums1.length];
+        int n = nums2.length;
+        int[] nextGreater = new int[n];
+
+        Stack<Integer> stack = new Stack<>();
+
+        // Compute next greater for nums2
+        for (int i = n - 1; i >= 0; i--) {
+
+            while (!stack.isEmpty() && stack.peek() <= nums2[i]) {
+                stack.pop();
+            }
+
+            nextGreater[i] = stack.isEmpty() ? -1 : stack.peek();
+
+            stack.push(nums2[i]);
+        }
+
+        // Build answer for nums1
+        int[] ans = new int[nums1.length];
 
         for (int i = 0; i < nums1.length; i++) {
 
-            int target = nums1[i];
-            int index = -1;
+            for (int j = 0; j < n; j++) {
 
-            // Find target element in nums2
-            for (int j = 0; j < nums2.length; j++) {
-                if (nums2[j] == target) {
-                    index = j;
+                if (nums2[j] == nums1[i]) {
+                    ans[i] = nextGreater[j];
                     break;
                 }
             }
-
-            // Find next greater element
-            int nextGreater = -1;
-
-            for (int j = index + 1; j < nums2.length; j++) {
-                if (nums2[j] > target) {
-                    nextGreater = nums2[j];
-                    break;
-                }
-            }
-
-            result[i] = nextGreater;
         }
 
-        return result;
+        return ans;
     }
 }
