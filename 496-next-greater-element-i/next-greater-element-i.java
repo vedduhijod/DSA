@@ -1,46 +1,40 @@
-import java.util.Stack;
+import java.util.*;
 
 class Solution {
 
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
 
-        int n = nums2.length;
+        Stack<Integer> stack = new Stack<>();
+        Map<Integer, Integer> map = new HashMap<>();
 
-        // Store next greater for nums2
-        int[] nge = new int[n];
+        // Traverse nums2 from right to left
+        for (int i = nums2.length - 1; i >= 0; i--) {
 
-        Stack<Integer> st = new Stack<>();
+            int element = nums2[i];
 
-        // Find NGE for nums2
-        for (int i = n - 1; i >= 0; i--) {
-
-            while (!st.isEmpty() && st.peek() <= nums2[i]) {
-                st.pop();
+            // Remove smaller elements
+            while (!stack.isEmpty() && stack.peek() <= element) {
+                stack.pop();
             }
 
-            if (st.isEmpty()) {
-                nge[i] = -1;
+            // Store next greater element
+            if (stack.isEmpty()) {
+                map.put(element, -1);
             } else {
-                nge[i] = st.peek();
+                map.put(element, stack.peek());
             }
 
-            st.push(nums2[i]);
+            // Push current element
+            stack.push(element);
         }
+
+        int[] result = new int[nums1.length];
 
         // Build answer for nums1
-        int[] ans = new int[nums1.length];
-
         for (int i = 0; i < nums1.length; i++) {
-
-            for (int j = 0; j < n; j++) {
-
-                if (nums1[i] == nums2[j]) {
-                    ans[i] = nge[j];
-                    break;
-                }
-            }
+            result[i] = map.get(nums1[i]);
         }
 
-        return ans;
+        return result;
     }
 }
