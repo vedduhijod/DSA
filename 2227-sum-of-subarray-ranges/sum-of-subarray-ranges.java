@@ -2,22 +2,66 @@ class Solution {
 
     public long subArrayRanges(int[] nums) {
 
-        long ans = 0;
+        return sumMax(nums) - sumMin(nums);
+    }
 
-        for (int i = 0; i < nums.length; i++) {
+    // Contribution as maximum
+    private long sumMax(int[] nums) {
 
-            int min = nums[i];
-            int max = nums[i];
+        int n = nums.length;
+        long sum = 0;
 
-            for (int j = i; j < nums.length; j++) {
+        Stack<Integer> stack = new Stack<>();
 
-                min = Math.min(min, nums[j]);
-                max = Math.max(max, nums[j]);
+        for (int i = 0; i <= n; i++) {
 
-                ans += (max - min);
+            while (!stack.isEmpty() &&
+                  (i == n || nums[stack.peek()] < nums[i])) {
+
+                int mid = stack.pop();
+
+                int left = stack.isEmpty() ? -1 : stack.peek();
+                int right = i;
+
+                long count =
+                        (long)(mid - left) * (right - mid);
+
+                sum += (long) nums[mid] * count;
             }
+
+            stack.push(i);
         }
 
-        return ans;
+        return sum;
+    }
+
+    // Contribution as minimum
+    private long sumMin(int[] nums) {
+
+        int n = nums.length;
+        long sum = 0;
+
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i <= n; i++) {
+
+            while (!stack.isEmpty() &&
+                  (i == n || nums[stack.peek()] > nums[i])) {
+
+                int mid = stack.pop();
+
+                int left = stack.isEmpty() ? -1 : stack.peek();
+                int right = i;
+
+                long count =
+                        (long)(mid - left) * (right - mid);
+
+                sum += (long) nums[mid] * count;
+            }
+
+            stack.push(i);
+        }
+
+        return sum;
     }
 }
