@@ -6,34 +6,34 @@ class Solution {
 
         for (int asteroid : asteroids) {
 
-            while (!st.isEmpty()
-                    && st.peek() > 0
-                    && asteroid < 0
-                    && st.peek() < -asteroid) {
+            boolean destroyed = false;
 
-                st.pop();
+            // collision condition
+            while (!st.isEmpty() &&
+                    st.peek() > 0 &&
+                    asteroid < 0) {
+
+                // top asteroid smaller -> destroy top
+                if (st.peek() < -asteroid) {
+                    st.pop();
+                }
+
+                // both equal -> destroy both
+                else if (st.peek() == -asteroid) {
+                    st.pop();
+                    destroyed = true;
+                    break;
+                }
+
+                // current asteroid smaller
+                else {
+                    destroyed = true;
+                    break;
+                }
             }
 
-            // equal size -> both destroy
-            if (!st.isEmpty()
-                    && st.peek() > 0
-                    && asteroid < 0
-                    && st.peek() == -asteroid) {
-
-                st.pop();
-            }
-
-            // current asteroid destroyed
-            else if (!st.isEmpty()
-                    && st.peek() > 0
-                    && asteroid < 0
-                    && st.peek() > -asteroid) {
-
-                continue;
-            }
-
-            // current asteroid survives
-            else {
+            // current asteroid survived
+            if (!destroyed) {
                 st.push(asteroid);
             }
         }
