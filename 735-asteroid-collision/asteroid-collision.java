@@ -4,43 +4,44 @@ class Solution {
 
         Stack<Integer> st = new Stack<>();
 
-        for (int asteroid : asteroids) {
+        for (int i = 0; i < asteroids.length; i++) {
 
-            boolean destroyed = false;
+            // positive asteroid
+            if (asteroids[i] > 0) {
 
-            // collision condition
-            while (!st.isEmpty() &&
-                    st.peek() > 0 &&
-                    asteroid < 0) {
-
-                // top asteroid smaller -> destroy top
-                if (st.peek() < -asteroid) {
-                    st.pop();
-                }
-
-                // both equal -> destroy both
-                else if (st.peek() == -asteroid) {
-                    st.pop();
-                    destroyed = true;
-                    break;
-                }
-
-                // current asteroid smaller
-                else {
-                    destroyed = true;
-                    break;
-                }
+                st.push(asteroids[i]);
             }
 
-            // current asteroid survived
-            if (!destroyed) {
-                st.push(asteroid);
+            // negative asteroid
+            else {
+
+                // remove smaller positive asteroids
+                while (!st.isEmpty()
+                        && st.peek() > 0
+                        && st.peek() < Math.abs(asteroids[i])) {
+
+                    st.pop();
+                }
+
+                // equal size -> both destroy
+                if (!st.isEmpty()
+                        && st.peek() == Math.abs(asteroids[i])) {
+
+                    st.pop();
+                }
+
+                // current asteroid survives
+                else if (st.isEmpty() || st.peek() < 0) {
+
+                    st.push(asteroids[i]);
+                }
             }
         }
 
         int[] ans = new int[st.size()];
 
         for (int i = st.size() - 1; i >= 0; i--) {
+
             ans[i] = st.pop();
         }
 
