@@ -1,32 +1,28 @@
-/**
- * Definition for singly-linked list.
- * class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) {
- *         val = x;
- *         next = null;
- *     }
- * 
- */
- import java.util.HashSet;
-import java.util.Set;
-
 public class Solution {
     public ListNode detectCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return null;
+        }
 
-        Set<ListNode> visited = new HashSet<>();
+        ListNode slow = head;
+        ListNode fast = head;
 
-        ListNode current = head;
+        // Step 1: Detect cycle
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
 
-        while (current != null) {
+            if (slow == fast) {
+                // Step 2: Find cycle start
+                ListNode ptr = head;
 
-            if (visited.contains(current)) {
-                return current;   // cycle start node
+                while (ptr != slow) {
+                    ptr = ptr.next;
+                    slow = slow.next;
+                }
+
+                return ptr;
             }
-
-            visited.add(current);
-            current = current.next;
         }
 
         return null;
