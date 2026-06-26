@@ -1,10 +1,23 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
 class Solution {
     public void reorderList(ListNode head) {
         if (head == null || head.next == null) {
             return;
         }
 
-        // Step 1: Find the middle
+        // Step 1: Find the end of the first half
         ListNode slow = head;
         ListNode fast = head.next;
 
@@ -21,14 +34,14 @@ class Solution {
         ListNode first = head;
 
         while (second != null) {
-            ListNode temp1 = first.next;
-            ListNode temp2 = second.next;
+            ListNode nextFirst = first.next;
+            ListNode nextSecond = second.next;
 
             first.next = second;
-            second.next = temp1;
+            second.next = nextFirst;
 
-            first = temp1;
-            second = temp2;
+            first = nextFirst;
+            second = nextSecond;
         }
     }
 
