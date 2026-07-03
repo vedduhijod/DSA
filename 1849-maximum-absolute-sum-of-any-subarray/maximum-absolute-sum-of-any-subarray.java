@@ -1,32 +1,15 @@
 class Solution {
     public int maxAbsoluteSum(int[] nums) {
-        int maxSum = maxSubarray(nums);
-        int minSum = minSubarray(nums);
-        
-        return Math.max(Math.abs(maxSum), Math.abs(minSum));
-    }
+        int prefix = 0;
+        int minPrefix = 0;
+        int maxPrefix = 0;
 
-    private int maxSubarray(int[] nums) {
-        int bestEnding = nums[0];
-        int ans = nums[0];
-
-        for (int i = 1; i < nums.length; i++) {
-            bestEnding = Math.max(bestEnding + nums[i], nums[i]);
-            ans = Math.max(ans, bestEnding);
+        for (int num : nums) {
+            prefix += num;
+            minPrefix = Math.min(minPrefix, prefix);
+            maxPrefix = Math.max(maxPrefix, prefix);
         }
 
-        return ans;
-    }
-
-    private int minSubarray(int[] nums) {
-        int bestEnding = nums[0];
-        int ans = nums[0];
-
-        for (int i = 1; i < nums.length; i++) {
-            bestEnding = Math.min(bestEnding + nums[i], nums[i]);
-            ans = Math.min(ans, bestEnding);
-        }
-
-        return ans;
+        return maxPrefix - minPrefix;
     }
 }
