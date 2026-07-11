@@ -2,34 +2,24 @@ import java.util.*;
 
 class Solution {
     public int[][] merge(int[][] intervals) {
+        if (intervals.length <= 1) return intervals;
 
-        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        // Sort by start time
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
 
-        List<int[]> result = new ArrayList<>();
+        List<int[]> merged = new ArrayList<>();
 
-        int start = intervals[0][0];
-        int end = intervals[0][1];
-
-        for (int i = 1; i < intervals.length; i++) {
-
-            int currStart = intervals[i][0];
-            int currEnd = intervals[i][1];
-
-            // Overlapping
-            if (currStart <= end) {
-                end = Math.max(end, currEnd);
-            } 
-            // Non-overlapping
-            else {
-                result.add(new int[]{start, end});
-                start = currStart;
-                end = currEnd;
+        for (int[] interval : intervals) {
+            if (merged.isEmpty() || merged.get(merged.size() - 1)[1] < interval[0]) {
+                // No overlap
+                merged.add(interval);
+            } else {
+                // Overlap: extend the end time
+                merged.get(merged.size() - 1)[1] =
+                    Math.max(merged.get(merged.size() - 1)[1], interval[1]);
             }
         }
 
-        // Add the last merged interval
-        result.add(new int[]{start, end});
-
-        return result.toArray(new int[result.size()][]);
+        return merged.toArray(new int[merged.size()][]);
     }
 }
