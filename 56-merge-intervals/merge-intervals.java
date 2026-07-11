@@ -2,12 +2,8 @@ import java.util.*;
 
 class Solution {
     public int[][] merge(int[][] intervals) {
-        if (intervals.length <= 1) {
-            return intervals;
-        }
 
-        // Sort intervals by start time
-        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
 
         List<int[]> result = new ArrayList<>();
 
@@ -15,15 +11,19 @@ class Solution {
         int end = intervals[0][1];
 
         for (int i = 1; i < intervals.length; i++) {
-            // Overlapping intervals
-            if (intervals[i][0] <= end) {
-                end = Math.max(end, intervals[i][1]);
+
+            int currStart = intervals[i][0];
+            int currEnd = intervals[i][1];
+
+            // Overlapping
+            if (currStart <= end) {
+                end = Math.max(end, currEnd);
             } 
-            // Non-overlapping interval
+            // Non-overlapping
             else {
                 result.add(new int[]{start, end});
-                start = intervals[i][0];
-                end = intervals[i][1];
+                start = currStart;
+                end = currEnd;
             }
         }
 
