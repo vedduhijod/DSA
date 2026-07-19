@@ -3,6 +3,9 @@ class Solution {
         int i = 0;
         int j = numbers.length - 1;
         int res = 0;
+        if(numbers.length == 0){
+            return new int[]{-1, -1};
+        }
 
         while(i < j){
             res = numbers[i] + numbers[j];
