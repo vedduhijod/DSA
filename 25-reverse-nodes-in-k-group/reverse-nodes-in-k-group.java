@@ -10,39 +10,62 @@
  */
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null || k == 1) return head;
 
-        // Step 1: check if k nodes exist
-        ListNode temp = head;
-        int count = 0;
+        ListNode left = head;
+        ListNode prevGroupTail = null;
+        ListNode res = null;
 
-        while (temp != null && count < k) {
-            temp = temp.next;
-            count++;
+        while (left != null) {
+
+            // Find kth node
+            ListNode right = left;
+            for (int i = 1; i < k && right != null; i++) {
+                right = right.next;
+            }
+
+            // Fewer than k nodes left
+            if (right == null) {
+                if (prevGroupTail != null)
+                    prevGroupTail.next = left;
+                if (res == null)
+                    res = left;
+                break;
+            }
+
+            ListNode nextGroup = right.next;
+
+            // Reverse current group
+            ListNode newHead = reverse(left, k);
+
+            if (prevGroupTail != null)
+                prevGroupTail.next = newHead;
+
+            if (res == null)
+                res = newHead;
+
+            // Old head becomes tail after reversal
+            prevGroupTail = left;
+            left = nextGroup;
         }
 
-        // If less than k nodes remain, return head
-        if (count < k) return head;
+        return res;
+    }
 
-        // Step 2: reverse first k nodes
+    private ListNode reverse(ListNode head, int k) {
         ListNode prev = null;
         ListNode curr = head;
-        ListNode next = null;
-        count = 0;
 
-        while (curr != null && count < k) {
-            next = curr.next;
+        while (k-- > 0) {
+            ListNode next = curr.next;
             curr.next = prev;
             prev = curr;
             curr = next;
-            count++;
         }
 
-        // Step 3: recursively process remaining nodes
-        if (next != null) {
-            head.next = reverseKGroup(next, k);
-        }
+        // Connect tail of reversed group to remaining list
+        head.next = curr;
 
-        // Step 4: return new head
         return prev;
     }
 }
